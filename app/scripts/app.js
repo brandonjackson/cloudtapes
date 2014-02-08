@@ -4,13 +4,18 @@ angular.module('cloudtapesApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'contenteditable'
 ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .when('/mix', {
+        templateUrl: 'views/mix.html',
+        controller: 'MixCtrl'
       })
       .otherwise({
         redirectTo: '/'
