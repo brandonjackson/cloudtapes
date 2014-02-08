@@ -4,8 +4,7 @@ angular.module('cloudtapesApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute',
-  'contenteditable'
+  'ngRoute'
 ])
   .config(function ($routeProvider) {
     $routeProvider
