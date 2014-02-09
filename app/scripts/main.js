@@ -122,6 +122,48 @@ var MixInfoView = Backbone.Epoxy.View.extend({
     bindings: "data-bind"
 });
 
+// Submit To Dropbox
+
+function upload(mix, dropboxClient){
+
+// 1) rewrite files
+//     - prep files, info arrays
+//     - handle cb(error,tracks,playlist)
+// 2) get trackCollections.folderName
+// 3) writeFiles to dropbox, checking progress
+    var files = mix.tracks.toFileList();
+    var info = mix.toJSON();
+    info.tracks = mix.tracks.toJSON();
+    console.log("info passed to id3.makeplaylist");
+    console.log(info);
+    ID3.makePlaylist(files, info, function(error, tracks){
+        console.log(error);
+        console.log(tracks);
+
+        mix.setFolderName();
+
+        if(error){
+            // error handling code here
+        }
+
+        // grab folderName
+        dropboxClient.mkdir(mix.get("folderName"))
+            .then(_.bind(function(stat){
+                console.log('mkdir success, creating files');
+
+                // create folder
+                for(var i=0; i < this.tracks.length; i++){
+                    var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
+                    console.log("Uploading File to "+path);
+                    this.dropboxClient.writeFile(path,this.tracks[i]);
+                }
+            }, {mix: mix, dropboxClient: dropboxClient, tracks: tracks}))
+            .fail(function(error){
+                // handle errors
+            });
+    });
+
+}
 
 $(document).ready(function () {
     'use strict';
@@ -161,6 +203,6 @@ $(document).ready(function () {
     
     $("#submit").click(function(){
         console.log("Submit Button Clicked");
-        tracksCollection.uploadFiles(FOLDER_NAME,client);
+        upload(mixModel,client);
     });
 });
