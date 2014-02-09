@@ -12,6 +12,26 @@ window.ss14Team45 = {
     }
 };
 
+var ListItemView = Backbone.Epoxy.View.extend({
+    tagName: "li",
+    bindings: {
+        "span.title": "text:title",
+        "span.artist": "text:artist"
+    },
+    template: _.template("<span class='title' rel='<% id %>'><% title %></span>"),
+    render: function(data){
+        this.$el.html( this.template(this.model.attributes));
+        return this;
+    },
+    initialize: function() {
+        this.$el.html( this.template(this.model.attributes));//this.model.get("title") );
+    }
+});
+
+var ListView = Backbone.Epoxy.View.extend({
+    el: "#bind-collection"
+});
+
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
