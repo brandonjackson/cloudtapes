@@ -1,4 +1,5 @@
 /*global ss14Team45, $*/
+var FOLDER_NAME = "test";
 
 
 window.ss14Team45 = {
@@ -90,6 +91,8 @@ var TracksCollection = Backbone.Collection.extend({
             });
         }
     },
+    toFileList: function(){
+        return this.pluck("file");
     }
 });
 
@@ -102,8 +105,6 @@ var DropZoneView = Backbone.View.extend({
         this.collection = options.collection;
     },
     onDrop: function(e){
-        console.log("onDrop()");
-        console.log(e);
         e.originalEvent.stopPropagation();
         e.originalEvent.preventDefault();
 
