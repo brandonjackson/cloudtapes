@@ -96,13 +96,32 @@ var TracksCollection = Backbone.Collection.extend({
     }
 });
 
+// Drag and drop target zone
+// usage: 
+//   var dropZoneView = new DropZoneView({
+//      collection: tracksCollection,
+//      emptyStateView: ".empty"
+//   });
 var DropZoneView = Backbone.View.extend({
     events: {
         "dragover": "onDragOver",
         "drop": "onDrop"
     },
     initialize: function(options){
+
+        // save empty state view
+        if(options.emptyStateView){
+            this.emptyStateView = this.$el.children(options.emptyStateView);
+        }
         this.collection = options.collection;
+        this.collection.on("add remove", _.bind(this.refresh,this));
+    },
+
+    // Hide emptyState view when there are items in the list
+    refresh: function(){
+        if(this.emptyStateView){}
+        var emptyStateView = this.$el.children(".empty");
+        (this.collection.length > 0) ? this.emptyStateView.hide() : this.emptyStateView.show();
     },
     onDrop: function(e){
         e.originalEvent.stopPropagation();
@@ -142,6 +161,7 @@ var view = new ListView({
 
 var dropZoneView = new DropZoneView({
     el: "#tracks",
+    emptyStateView: ".empty",
     collection: tracksCollection
 });
 dropZoneView.delegateEvents();
