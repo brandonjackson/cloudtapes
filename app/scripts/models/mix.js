@@ -4,8 +4,10 @@ var MixModel= Backbone.Model.extend({
 
     url: '',
 
-    initialize: function() {
-        this.setFolderName();
+    initialize: function(options) {
+        if(options.tracks){
+            this.tracks = options.tracks;
+        }
     },
 
     defaults: {
@@ -20,10 +22,13 @@ var MixModel= Backbone.Model.extend({
     setFolderName: function(){
         var timestamp = new Date().getTime().toString();
         if(this.get("author") || this.get("")){
-            var baseName = this.get("author") + this.get("title") + timestamp;
+            var baseName = this.get("author") + "_" + this.get("title") + "_" + timestamp;
         } else {
             baseName = timestamp;
         }
-        this.folderName = baseName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        this.set({
+            folderName: folderName = baseName.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+        });
+
     }
 });
