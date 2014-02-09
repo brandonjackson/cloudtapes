@@ -1162,27 +1162,32 @@ var ID3 = {
 
   },
 
-  // INPUT: File Descriptor
-  // OUTPUT: {
+  // @param File file
+  // @return Promise, with properties: {
   //    title: title,
   //    artist: artist,
   //    tagLength: total tag size (including header) in bytes,
   //    v1: found id3 v1 tags?
   //    v2: found id3 v2 tags?
   // }
-  readFile: function (file, cb) {
+  readFile: function (file) {
+    var deferred = Q.defer();
     ID3Reader(file, function(err, tags) {
-      if (err) cb(err);
-      var v1 = !!tags.v1.title;
-      var v2 = !!tags.v2.title;
-      cb(err, {
-        title: tags.title || null,
-        artist: tags.artist || null,
-        tagLength: tags.v2.tagLength || 0,
-        v1: v1,
-        v2: v2
-      });
+      if (err){
+        deferred.reject(err);
+      } else {
+        var v1 = !!tags.v1.title;
+        var v2 = !!tags.v2.title;
+        deferred.resolve({
+          title: tags.title || null,
+          artist: tags.artist || null,
+          tagLength: tags.v2.tagLength || 0,
+          v1: v1,
+          v2: v2
+        });
+      }
     });
+    return deferred.promise;
   }
 
 }
