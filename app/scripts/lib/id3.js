@@ -1166,7 +1166,7 @@ var ID3 = {
     var start = (info.v2) ? info.tagLength : 0;
     var end = (info.v1) ? -128 : file.size;
     var blob = file.slice(start, end);
-    var mp3 = ID3Writer([
+    var mp3 = ID3Writer.create([
       {frameType: 'TIT2', data: i.title},
       {frameType: 'TALB', data: i.album},
       {frameType: 'TPE1', data: i.artist},
@@ -1201,13 +1201,13 @@ var ID3 = {
       track.cover = mix.cover;
       // TODO coverMime
       track.description = mix.description;
-      var mp3 = writeFile(files[i], track);
+      var mp3 = ID3.writeFile(files[i], track);
       tagged.push(mp3);
     }
     if (tagged.length !== length) {
-      cb(null, tagged);
-    } else {
       cb('Playlist error.');
+    } else {
+      cb(null, tagged);
     }
 
   },
