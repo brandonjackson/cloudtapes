@@ -1146,7 +1146,7 @@ var ID3Writer = {
 
 var ID3 = {
 
-  writeFile: function (file, info, cb) {
+  writeFile: function (file, info) {
     var i = {
       title: '',
       artist: '',
@@ -1183,12 +1183,34 @@ var ID3 = {
   /*
   * @param File[] files     array of File objects
   * @param json[] info      array of objects (json-encoded)  
-  * @param function cb      function(error, tracks, playlist)
+  * @param function cb      function(error, tracks)
   * @return none
   */
-  makePlaylist: function (files, info, cb) {
+  makePlaylist: function (files, mix, cb) {
+    var tracks = mix.tracks;
+    if (files.length !== tracks.length) {
+      cb('Mismatched input.');
+    }
+    var length = files.length;
+    var tagged = [];
+    for (var i = 0; i < length; i++) {
+      var track = tracks[i];
+      track.totalTracks = length;
+      track.year = mix.year;
+      track.album = mix.title;
+      track.cover = mix.cover;
+      // TODO coverMime
+      track.description = mix.description;
+      var mp3 = writeFile(files[i], tracks[i]);
+      tagged.push(mp3);
+    }
+    if (tagged.length !== 0) {
+      cb(null, tagged);
+    } else {
+      cb('Generic playlist error.');
+    }
 
-  },
+  }
 
   // @param File file
   // @return Promise, with properties: {
