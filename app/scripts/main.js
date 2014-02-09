@@ -208,11 +208,10 @@ $(document).ready(function () {
                             console.log(urlObject.url);
                             console.log($);
                             console.log($("#submit"));
-                            $("#submit").removeClass('btn-disabled');
-                            $("#submit").addClass('btn-success');
-                            $("#submit").attr("href",urlObject.url+"?dl=1");
-                            $("#submit").text("Download .zip");
-                            $("#submit").off("click");
+                            $("#submit").hide();
+                            $("#download").show();
+                            $("#download #zip").attr("href",urlObject.url+"?dl=1");
+                            $("#download #download-url").attr("value",urlObject.url);
                         },this)).fail(function(error){
                             // handle errors
                         });

@@ -27,10 +27,10 @@
 
         <div class="container">
             <div class="header">
-                <ul class="nav nav-pills pull-right">
+                <!--<ul class="nav nav-pills pull-right">
                     <li class="active"><a href="#">Home</a></li>
                     <li><a href="#">My Mixes</a></li>
-                </ul>
+                </ul>-->
                 <h3>Tapes</h3>
             </div>
 
@@ -40,7 +40,7 @@
                 <label for="mix-author">Mixtape Author</label>
                 <input type="text" id="mix-author" name="mix-author" data-bind="value:author,events:['keyup']" placeholder="Author" />
             </div>
-            <div id="tracks" class="jumbotron">
+            <div id="tracks">
                 <div class="empty">
                     <h2>Drag Your Files Here</h2>
                 </div>
@@ -55,6 +55,11 @@
             </div>
             <button type="button" class="btn btn-lg btn-success" id="submit">Upload Files</button>
 
+            <div id="download" style="display: none;">
+                <a type="button" class="btn btn-lg btn-success" id="zip" href="#">Download .zip</a>
+                or Copy link
+                <input type="text" class="input-lg" value="link URL here" id="download-url" />
+            </div>
            
             <div class="footer">
                 <p>&copy; Brandon Jackson &amp; Seth Thompson</p>
