@@ -290,17 +290,17 @@
     return this.getUint8(offset + 2) + (this.getUint8(offset + 1) << 8) + (this.getUint8(offset) << 16);
   };
 
-  var id3 = function(opts, cb) {
+  var ID3Reader = function(opts, cb) {
     /*
      * Initialise ID3
      */
     var options = {
-      type: id3.OPEN_URI,
+      type: ID3Reader.OPEN_URI,
     };
     if(typeof opts === 'string') {
-      opts = {file: opts, type: id3.OPEN_URI};
+      opts = {file: opts, type: ID3Reader.OPEN_URI};
     } else if(typeof window !== 'undefined' && window.File && opts instanceof window.File) {
-      opts = {file: opts, type: id3.OPEN_FILE};
+      opts = {file: opts, type: ID3Reader.OPEN_FILE};
     }
     for(var k in opts) {
       options[k] = opts[k];
@@ -310,11 +310,11 @@
       return cb('No file was set');
     }
 
-    if(options.type === id3.OPEN_FILE) {
+    if(options.type === ID3Reader.OPEN_FILE) {
       if(typeof window === 'undefined' || !window.File || !window.FileReader || typeof ArrayBuffer === 'undefined') {
         return cb('Browser does not have support for the File API and/or ArrayBuffers');
       }
-    } else if(options.type === id3.OPEN_LOCAL) {
+    } else if(options.type === ID3Reader.OPEN_LOCAL) {
       if(typeof require !== 'function') {
         return cb('Local paths may not be read within a browser');
       }
@@ -942,6 +942,7 @@
          * Calculate the tag size to be read
          */
         tagSize += dv.getUint32Synch(6);
+        tags.v2.totalLength = headerSize + tagSize;
         handle.read(tagSize, headerSize, function(err, buffer) {
           if(err) {
             processed.v2 = true;
@@ -999,19 +1000,19 @@
     });
   };
 
-  id3.OPEN_FILE = Reader.OPEN_FILE;
-  id3.OPEN_URI = Reader.OPEN_URI;
-  id3.OPEN_LOCAL = Reader.OPEN_LOCAL;
+  ID3Reader.OPEN_FILE = Reader.OPEN_FILE;
+  ID3Reader.OPEN_URI = Reader.OPEN_URI;
+  ID3Reader.OPEN_LOCAL = Reader.OPEN_LOCAL;
 
   if(typeof module !== 'undefined' && module.exports) {
-    module.exports = id3;
+    module.exports = ID3Reader;
   } else {
     if(typeof define === 'function' && define.amd) {
       define('id3', [], function() {
-        return id3;
+        return ID3Reader;
       });
     } else {
-      window.id3 = id3;
+      window.ID3Reader = ID3Reader;
     }
   }
 })();
@@ -1139,6 +1140,49 @@ var ID3Writer = {
                     "\x03\x00", // version
                     "\0", // flags
                     this.syncSafeSize(size)]) //size
+  }
+
+}
+
+var ID3 = {
+
+  writeFile: function (file, info, cb) {
+
+  },
+
+  // INPUT: List of File Descriptors, {
+
+  /*
+  * @param File[] files     array of File objects
+  * @param json[] info      array of objects (json-encoded)  
+  * @param function cb      function(error, tracks, playlist)
+  * @return none
+  */
+  writeFiles: function (files, info, cb) {
+
+  },
+
+  // INPUT: File Descriptor
+  // OUTPUT: {
+  //    title: title,
+  //    artist: artist,
+  //    tagLength: total tag size (including header) in bytes,
+  //    v1: found id3 v1 tags?
+  //    v2: found id3 v2 tags?
+  // }
+  readFile: function (file, cb) {
+    ID3Reader(file, function(err, tags) {
+      if (err) cb(err);
+      var v1 = !!tags.v1.title;
+      var v2 = !!tags.v2.title;
+      cb(err, {
+        title: tags.title || null,
+        artist: tags.artist || null,
+        tagLength: tags.v2.tagLength || 0,
+        v1: v1,
+        v2: v2
+      });
+    });
   }
 
 }
