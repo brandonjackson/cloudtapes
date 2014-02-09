@@ -216,7 +216,11 @@ $(document).ready(function () {
                             // handle errors
                         });
                 },this));
-            }, { files: files, info: info, mix: mix, dropboxClient: dropboxClient}));
+            }, { files: files, info: info, mix: mix, dropboxClient: dropboxClient}))
+            .fail(function(error){
+                console.log("ERROR! outerpmost promise was rejected");
+                console.log(error);
+            });
        
     }
 });
