@@ -1147,7 +1147,35 @@ var ID3Writer = {
 var ID3 = {
 
   writeFile: function (file, info, cb) {
-
+    var i = {
+      title: '',
+      artist: '',
+      genre: '',
+      trackNumber: '',
+      totalTracks: '',
+      year: '',
+      album: '',
+      cover: null,
+      coverMime: '',
+      description: ''
+    };
+    for(var k in info) {
+      i[k] = info[k];
+    }
+    i.trck = i.trackNumber + '/' + i.totalTracks;
+    var start = (info.v2) ? info.tagLength : 0;
+    var end = (info.v1) ? -128 : file.size;
+    var blob = file.slice(start, end);
+    var mp3 = ID3Writer([
+      {frameType: 'TIT2', data: i.title},
+      {frameType: 'TALB', data: i.album},
+      {frameType: 'TPE1', data: i.artist},
+      {frameType: 'TYER', data: i.year},
+      {frameType: 'TRCK', data: i.trck},
+      {frameType: 'TCMP', data: '1'}
+      //{frameType: 'APIC', data: i.cover, coverMime: i.coverMime}
+    ], blob);
+    return mp3;
   },
 
   // INPUT: List of File Descriptors, {
@@ -1158,7 +1186,7 @@ var ID3 = {
   * @param function cb      function(error, tracks, playlist)
   * @return none
   */
-  writeFiles: function (files, info, cb) {
+  makePlaylist: function (files, info, cb) {
 
   },
 
