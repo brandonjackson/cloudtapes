@@ -72,6 +72,40 @@ var TracksCollection = Backbone.Collection.extend({
     }
 });
 
+var DropZoneView = Backbone.View.extend({
+    events: {
+        "dragover": "onDragOver",
+        "drop": "onDrop"
+    },
+    initialize: function(options){
+        this.collection = options.collection;
+    },
+    onDrop: function(e){
+        console.log("onDrop()");
+        console.log(e);
+        e.originalEvent.stopPropagation();
+        e.originalEvent.preventDefault();
+
+        var files = e.originalEvent.dataTransfer.files; // FileList object.
+
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        for (var i = 0, f; f = files[i]; i++) {
+            var track = new TrackModel({
+                title: f.name,
+                artist: f.size + "",
+                file: f
+            });
+            this.collection.add(track);
+        }
+    },
+    onDragOver: function (e) {
+        e.originalEvent.stopPropagation();
+        e.originalEvent.preventDefault();
+        e.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    }
+});
+
 var ListView = Backbone.Epoxy.View.extend({
     el: "#bind-collection"
 });
@@ -81,6 +115,12 @@ var tracksCollection = new TracksCollection();
 var view = new ListView({
     collection: tracksCollection
 });
+
+var dropZoneView = new DropZoneView({
+    el: "#tracks",
+    collection: tracksCollection
+});
+dropZoneView.delegateEvents();
 
 $(document).ready(function () {
     'use strict';
@@ -111,5 +151,10 @@ $(document).ready(function () {
             var sortedIdList = $("#bind-collection ul").sortable( "toArray", { attribute: "rel" } );
             tracksCollection.sortByIdList(sortedIdList);
         }
+    });
+    
+    $("#submit").click(function(){
+        console.log("Submit Button Clicked");
+        tracksCollection.uploadFiles(FOLDER_NAME,client);
     });
 });
