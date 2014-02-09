@@ -9,8 +9,29 @@ window.ss14Team45 = {
     init: function () {
         'use strict';
         console.log('Hello from Backbone!');
+        Backbone.history.start();
+        console.log('History started');
     }
 };
+
+var Router = Backbone.Router.extend({
+
+  routes: {
+    "":                 "index",
+    "receiver":        "receiver"
+  },
+
+  index: function() {
+    console.log('back to index');
+  },
+
+  receiver: function() {
+    console.log('receiver');
+  }
+
+});
+
+var router = new Router();
 
 var ListItemView = Backbone.Epoxy.View.extend({
     tagName: "li",
@@ -28,6 +49,29 @@ var ListItemView = Backbone.Epoxy.View.extend({
     }
 });
 
+var TracksCollection = Backbone.Collection.extend({
+    model: TrackModel,
+    view: ListItemView,
+    uploadFiles: function(folder, client){
+        console.log("TracksCollection.uploadFiles()");
+        for(var i=0; i<this.length; i++){
+            var f = this.at(i).get("file");
+            var reader = new FileReader();
+            reader.onload = (function(theFile){
+                return function(e){
+                    console.log("reader.onload fired()");
+                    console.log(e.target.result);
+                    client.writeFile(FOLDER_NAME+"/"+theFile.name, e.target.result);
+                }
+            })(f);
+            reader.readAsArrayBuffer(f);
+        }
+    },
+    sortByIdList: function(ids){
+
+    }
+});
+
 var ListView = Backbone.Epoxy.View.extend({
     el: "#bind-collection"
 });
@@ -41,7 +85,6 @@ var view = new ListView({
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
-
     var client = new DropboxClient("f6u02e6s8nett1d", "http://localhost:9000/receiver.html");
 
     client.authenticate()
