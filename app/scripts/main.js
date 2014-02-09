@@ -32,6 +32,12 @@ var ListView = Backbone.Epoxy.View.extend({
     el: "#bind-collection"
 });
 
+var tracksCollection = new TracksCollection();
+
+var view = new ListView({
+    collection: tracksCollection
+});
+
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
@@ -56,4 +62,11 @@ $(document).ready(function () {
           console.log(error);
           alert("An Unexpected Error Has Occurred");
         });
+
+    $("#bind-collection ul").sortable({
+        update: function(e,ui){
+            var sortedIdList = $("#bind-collection ul").sortable( "toArray", { attribute: "rel" } );
+            tracksCollection.sortByIdList(sortedIdList);
+        }
+    });
 });
