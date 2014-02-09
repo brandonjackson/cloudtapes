@@ -113,7 +113,8 @@ dropZoneView.delegateEvents();
 
 var mixModel = new MixModel({
     title:"Hello World",
-    author:"Brandon Jackson"
+    author:"Brandon Jackson",
+    tracks: tracksCollection
 });
 
 var MixInfoView = Backbone.Epoxy.View.extend({
