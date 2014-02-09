@@ -1210,7 +1210,7 @@ var ID3 = {
       cb('Playlist error.');
     }
 
-  }
+  },
 
   // @param File file
   // @return Promise, with properties: {
