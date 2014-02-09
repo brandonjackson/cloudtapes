@@ -162,6 +162,9 @@ $(document).ready(function () {
     
     $("#submit").click(function(){
         console.log("Submit Button Clicked");
+        $(this).removeClass('btn-success');
+        $(this).addClass('btn-disabled');
+        $(this).text('Uploading...');
         upload(mixModel,client);
     });
 
@@ -204,21 +207,25 @@ $(document).ready(function () {
                             for(var i=0; i < this.tracks.length; i++){
                                 var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
                                 console.log("Uploading File to "+path);
-                                promises.push(this.dropboxClient.writeFile(path,this.tracks[i]));
+                                var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]);
+                                promises.push(writePromise);
                             }
 
-                            Q.allSettled(promises).then(_.bind(function(result){
-                                console.log("All Done! Making URL...");
-                                console.log(this);
-                                console.log(this.dropboxClient);
-                                this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true })
-                                    .then(_.bind(function(urlObject){
-                                        console.log("Download Link:");
-                                        console.log(urlObject.url);
-                                    },this));
-                            },this));
-                        }, this))
-                        .fail(function(error){
+                            return Q.allSettled(promises);
+                        },this)).then(_.bind(function(result){
+                            console.log("All Done! Making URL...");
+                            return this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true });
+                        },this)).then(_.bind(function(urlObject){
+                            console.log("Download Link:");
+                            console.log(urlObject.url);
+                            console.log($);
+                            console.log($("#submit"));
+                            $("#submit").removeClass('btn-disabled');
+                            $("#submit").addClass('btn-success');
+                            $("#submit").attr("href",urlObject.url+"?dl=1");
+                            $("#submit").text("Download .zip");
+                            $("#submit").off("click");
+                        },this)).fail(function(error){
                             // handle errors
                         });
                 },this));
