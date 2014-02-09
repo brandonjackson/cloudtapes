@@ -1166,15 +1166,16 @@ var ID3 = {
     var start = (info.v2) ? info.tagLength : 0;
     var end = (info.v1) ? -128 : file.size;
     var blob = file.slice(start, end);
-    var mp3 = ID3Writer.create([
+    var opts = [
       {frameType: 'TIT2', data: i.title},
       {frameType: 'TALB', data: i.album},
       {frameType: 'TPE1', data: i.artist},
       {frameType: 'TYER', data: i.year},
       {frameType: 'TRCK', data: i.trck},
-      {frameType: 'TCMP', data: '1'},
-      {frameType: 'APIC', data: i.cover, coverMime: i.coverMime}
-    ], blob);
+      {frameType: 'TCMP', data: '1'}
+    ];
+    if (i.cover) opts.push({frameType: 'APIC', data: i.cover, coverMime: i.coverMime});
+    var mp3 = ID3Writer.create(opts, blob);
     return mp3;
   },
 
@@ -1198,8 +1199,8 @@ var ID3 = {
       track.totalTracks = length;
       track.year = mix.year;
       track.album = mix.title;
-      track.cover = mix.imageFile;
-      track.coverMime = mix.imageFile.type;
+      track.cover = mix.imageFile || null;
+      track.coverMime = mix.imageFile===undefined ? null : mix.imageFile.type;
       track.description = mix.description;
       var mp3 = ID3.writeFile(files[i], track);
       tagged.push(mp3);
