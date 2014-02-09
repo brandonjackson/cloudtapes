@@ -52,6 +52,14 @@ var ListItemView = Backbone.Epoxy.View.extend({
 var TracksCollection = Backbone.Collection.extend({
     model: TrackModel,
     view: ListItemView,
+    initialize: function(options){
+        this.on("change:trackNumber",function(){
+            this.sort();
+        });
+    },
+    comparator: function(track){
+        return track.get("trackNumber");
+    },
     uploadFiles: function(folder, client){
         console.log("TracksCollection.uploadFiles()");
         for(var i=0; i<this.length; i++){
