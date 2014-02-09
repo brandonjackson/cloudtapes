@@ -30,5 +30,16 @@ var MixModel= Backbone.Model.extend({
             folderName: folderName = baseName.replace(/[^a-z0-9]/gi, '_').toLowerCase()
         });
 
+    },
+    setImageFromFile: function(imageFile, type) {
+        console.log("Setting image");
+        var type = imageFile.type;
+        var reader = new FileReader();
+        reader.onload = _.bind(function(evt) {
+            var dataView = new DataView(evt.target.result);
+            this.set("imageFile", new Blob([dataView], {type: type}));
+            console.log(this.get("imageFile"));
+        }, this);
+        reader.readAsArrayBuffer(imageFile);
     }
 });

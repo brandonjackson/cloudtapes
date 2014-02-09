@@ -48,6 +48,11 @@
                     <ul data-bind="collection:$collection"></ul>
                 </div>
             </div>
+            <div id="image" class="jumbotron">
+                <div class="empty">
+                    <h2>Drag Your Files Here</h2>
+                </div>
+            </div>
             <button type="button" class="btn btn-lg btn-success" id="submit">Upload Files</button>
 
            
@@ -96,10 +101,9 @@
         <script src="bower_components/jquery-ui/ui/jquery.ui.sortable.js"></script>
         <!-- endbuild -->
 
+        <!-- build:js({.tmp,app}) scripts/main.js -->
         <script src="scripts/lib/DropboxClient.js"></script>
         <script src="scripts/lib/id3.js"></script>
-
-        <!-- build:js({.tmp,app}) scripts/main.js -->
         <script src="scripts/models/track.js"></script>
         <script src="scripts/models/mix.js"></script>
         <script src="scripts/collections/mix.js"></script>

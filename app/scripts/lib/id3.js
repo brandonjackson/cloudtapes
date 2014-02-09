@@ -1172,8 +1172,8 @@ var ID3 = {
       {frameType: 'TPE1', data: i.artist},
       {frameType: 'TYER', data: i.year},
       {frameType: 'TRCK', data: i.trck},
-      {frameType: 'TCMP', data: '1'}
-      //{frameType: 'APIC', data: i.cover, coverMime: i.coverMime}
+      {frameType: 'TCMP', data: '1'},
+      {frameType: 'APIC', data: i.cover, coverMime: i.coverMime}
     ], blob);
     return mp3;
   },
@@ -1198,8 +1198,8 @@ var ID3 = {
       track.totalTracks = length;
       track.year = mix.year;
       track.album = mix.title;
-      track.cover = mix.cover;
-      // TODO coverMime
+      track.cover = mix.imageFile;
+      track.coverMime = mix.imageFile.type;
       track.description = mix.description;
       var mp3 = ID3.writeFile(files[i], track);
       tagged.push(mp3);

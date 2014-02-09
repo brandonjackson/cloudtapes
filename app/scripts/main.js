@@ -9,30 +9,8 @@ window.ss14Team45 = {
     Routers: {},
     init: function () {
         'use strict';
-        console.log('Hello from Backbone!');
-        Backbone.history.start();
-        console.log('History started');
     }
 };
-
-var Router = Backbone.Router.extend({
-
-  routes: {
-    "":                 "index",
-    "receiver":        "receiver"
-  },
-
-  index: function() {
-    console.log('back to index');
-  },
-
-  receiver: function() {
-    console.log('receiver');
-  }
-
-});
-
-var router = new Router();
 
 var TracksCollection = Backbone.Collection.extend({
     model: TrackModel,
@@ -111,6 +89,8 @@ var dropZoneView = new DropZoneView({
 });
 dropZoneView.delegateEvents();
 
+
+
 var mixModel = new MixModel({
     title:"Hello World",
     author:"Brandon Jackson",
@@ -122,12 +102,20 @@ var MixInfoView = Backbone.Epoxy.View.extend({
     bindings: "data-bind"
 });
 
+var imageDropZoneView = new ImageDropZoneView({
+    el: "#image",
+    emptyStateView: ".empty",
+    model: mixModel
+});
+imageDropZoneView.delegateEvents();
+
 // Submit To Dropbox
 
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
-    var client = new DropboxClient("f6u02e6s8nett1d", "http://localhost:9000/receiver.html");
+    var origin = window.location.origin;
+    var client = new DropboxClient("f6u02e6s8nett1d", origin +"/receiver.html");
 
     // client.authenticate()
     //     .then(function(client){
