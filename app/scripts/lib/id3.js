@@ -942,7 +942,7 @@
          * Calculate the tag size to be read
          */
         tagSize += dv.getUint32Synch(6);
-        tags.v2.totalLength = headerSize + tagSize;
+        tags.v2.tagLength = headerSize + tagSize;
         handle.read(tagSize, headerSize, function(err, buffer) {
           if(err) {
             processed.v2 = true;
