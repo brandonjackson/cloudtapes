@@ -34,7 +34,12 @@
                 <h3>Tapes</h3>
             </div>
 
-           
+            <div id="mix-info">
+                <label for="mix-title">Mixtape Title</label>
+                <input type="text" id="mix-title" name="mix-title" data-bind="value:title,events:['keyup']" placeholder="Title" />
+                <label for="mix-author">Mixtape Author</label>
+                <input type="text" id="mix-author" name="mix-author" data-bind="value:author,events:['keyup']" placeholder="Author" />
+            </div>
             <div id="tracks" class="jumbotron">
                 <div class="empty">
                     <h2>Drag Your Files Here</h2>
@@ -42,7 +47,6 @@
                  <div id="bind-collection" class="sortable">
                     <ul data-bind="collection:$collection"></ul>
                 </div>
-
             </div>
             <button type="button" class="btn btn-lg btn-success" id="submit">Upload Files</button>
 

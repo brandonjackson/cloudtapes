@@ -179,6 +179,17 @@ var dropZoneView = new DropZoneView({
 });
 dropZoneView.delegateEvents();
 
+var mixModel = new MixModel({
+    title:"Hello World",
+    author:"Brandon Jackson"
+});
+
+var MixInfoView = Backbone.Epoxy.View.extend({
+    el: "#mix-info",
+    bindings: "data-bind"
+});
+
+
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
@@ -202,6 +213,10 @@ $(document).ready(function () {
           console.log(error);
           alert("An Unexpected Error Has Occurred");
         });
+
+    var mixInfoView = new MixInfoView({
+        model: mixModel
+    });
 
     $("#bind-collection ul").sortable({
         update: function(e,ui){
