@@ -105,6 +105,7 @@ var MixInfoView = Backbone.Epoxy.View.extend({
 var imageDropZoneView = new ImageDropZoneView({
     el: "#image",
     emptyStateView: ".empty",
+    imageHolder: ".imageHolder",
     model: mixModel
 });
 imageDropZoneView.delegateEvents();

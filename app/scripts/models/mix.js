@@ -35,11 +35,16 @@ var MixModel= Backbone.Model.extend({
         console.log("Setting image");
         var type = imageFile.type;
         var reader = new FileReader();
+        var reader2 = new FileReader();
         reader.onload = _.bind(function(evt) {
             var dataView = new DataView(evt.target.result);
             this.set("imageFile", new Blob([dataView], {type: type}));
             console.log(this.get("imageFile"));
         }, this);
         reader.readAsArrayBuffer(imageFile);
+        reader2.onload = _.bind(function(evt) {
+            this.set("imageURI", evt.target.result);
+        }, this);
+        reader2.readAsDataURL(imageFile);
     }
 });

@@ -56,16 +56,26 @@ var ImageDropZoneView = Backbone.View.extend({
         if(options.emptyStateView){
             this.emptyStateView = this.$el.children(options.emptyStateView);
         }
+        if (options.imageHolder) {
+            this.imageHolder = this.$el.children(options.imageHolder);
+        }
         this.model = options.model;
-        //this.model.on("change:image", _.bind(this.refresh,this));
+        this.model.on("change:imageURI", _.bind(this.refresh,this));
     },
 
-    // // Hide emptyState view when there are items in the list
-    // refresh: function(){
-    //     if(this.emptyStateView){}
-    //     var emptyStateView = this.$el.children(".empty");
-    //     //TODO (this.model.empty?//TODO//) ? this.emptyStateView.hide() : this.emptyStateView.show();
-    // },
+    // Hide emptyState view when there are items in the list
+    refresh: function(){
+        if(this.emptyStateView){}
+        var emptyStateView = this.$el.children(".empty");
+        if (this.model.get("imageURI")) {
+            this.emptyStateView.hide();
+            this.imageHolder.children(".actualImage").attr("src", this.model.get("imageURI"));
+            this.imageHolder.show();
+        } else {
+            this.emptyStateView.show();
+            this.imageHolder.show();
+        }
+    },
     onDrop: function(e){
         console.log('dropping');
         e.originalEvent.stopPropagation();
