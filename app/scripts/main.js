@@ -92,8 +92,8 @@ dropZoneView.delegateEvents();
 
 
 var mixModel = new MixModel({
-    title:"Hello World",
-    author:"Brandon Jackson",
+    title:"",
+    author:"",
     tracks: tracksCollection
 });
 

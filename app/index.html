@@ -26,46 +26,49 @@
 
 
         <div class="container">
-            <div class="header">
                 <!--<ul class="nav nav-pills pull-right">
                     <li class="active"><a href="#">Home</a></li>
                     <li><a href="#">My Mixes</a></li>
                 </ul>-->
-                <h3>Tapes</h3>
+                <h5>Tiny Tapes <span class="authors">by Helvetica Hackers</span></h5>
+
+            <div id="mix-info row">
+                <form class="form-inline">
+                  <div class="form-group">
+                  <input class="form-control" type="text" id="mix-title" name="mix-title" data-bind="value:title,events:['keyup']" placeholder="Mixtape Title" />
+                </div>
+                  <div class="form-group">
+                  <input class="form-control" type="text" id="mix-author" name="mix-author" data-bind="value:author,events:['keyup']" placeholder="Mixtape Author" />
+                </div>
+                </form>
+            </div>
+            <div class="dropstuff row">
+              <div id="image" class="">
+                  <div class="empty">
+                      <h2><span class="glyphicon glyphicon-picture"></span> Drag Album Art Here</h2>
+                  </div>
+                  <div class="imageHolder">
+                    <img class="actualImage" src="">
+                  </div>
+              </div>
+              <div id="tracks">
+                  <div class="empty">
+                      <h2><span class="glyphicon glyphicon-music"></span> Drag MP3s Here</h2>
+                  </div>
+                   <div id="bind-collection" class="sortable">
+                      <ul data-bind="collection:$collection"></ul>
+                  </div>
+              </div>
+            </div>
+            <div class="buttonRow row">
+              <button type="button" class="btn btn-success" id="submit"><span class="glyphicon glyphicon-cloud-upload"></span> Upload Mixtape</button>
             </div>
 
-            <div id="mix-info">
-                <label for="mix-title">Mixtape Title</label>
-                <input type="text" id="mix-title" name="mix-title" data-bind="value:title,events:['keyup']" placeholder="Title" />
-                <label for="mix-author">Mixtape Author</label>
-                <input type="text" id="mix-author" name="mix-author" data-bind="value:author,events:['keyup']" placeholder="Author" />
-            </div>
-            <div id="tracks">
-                <div class="empty">
-                    <h2>Drag Your Files Here</h2>
-                </div>
-                 <div id="bind-collection" class="sortable">
-                    <ul data-bind="collection:$collection"></ul>
-                </div>
-            </div>
-            <div id="image" class="jumbotron">
-                <div class="empty">
-                    <h2>Drag Your Files Here</h2>
-                </div>
-                <div class="imageHolder">
-                  <img class="actualImage" src="">
-                </div>
-            </div>
-            <button type="button" class="btn btn-lg btn-success" id="submit">Upload Files</button>
-
-            <div id="download" style="display: none;">
-                <a type="button" class="btn btn-lg btn-success" id="zip" href="#">Download .zip</a>
-                or Copy link
-                <input type="text" class="input-lg" value="link URL here" id="download-url" />
-            </div>
-           
-            <div class="footer">
-                <p>&copy; Brandon Jackson &amp; Seth Thompson</p>
+            <div class="buttonRow row">
+            <div id="download" style="display: None">
+                <a type="button" class="btn btn-primary" id="zip" href="#"><span class="glyphicon glyphicon-cloud-download"></span> Download Mixtape</a>
+                or visit link
+                <input type="text" class="form-control linkForm" value="" id="download-url" />
             </div>
 
         </div>

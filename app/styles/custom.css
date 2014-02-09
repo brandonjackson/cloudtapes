@@ -7,11 +7,6 @@ body {
     width: 300px;
 }
 
-#tracks{
-	min-height: 400px;
-	border: 1px dashed #CCC;
-}
-
 #tracks ul{
 	list-style: none;
 	margin: 0;
@@ -37,4 +32,60 @@ body {
 }
 #tracks ul li .artist{
 	color: #AAA;
+}
+
+#tracks{
+  min-height: 200px;
+  width: 68%;
+  float: left;
+  background: #ecf0f1;
+}
+
+#image {
+  height: 200px;
+  width: 200px;
+  float: left;
+  margin-right: 20px;
+  background: #bdc3c7;
+}
+
+.dropstuff h2 {
+  font-size: 14px;
+  text-align: center;
+  margin: auto;
+  width: 100px;
+  margin-top: 80px;
+}
+
+#tracks, #image {
+  border-radius: 5px;
+}
+
+.form-inline .form-group, .navbar-form .form-group {
+  margin-bottom: 15px;
+}
+
+.form-inline {
+  text-align: right;
+}
+
+#submit, #download {
+  float: right;
+  margin-right: 15px;
+}
+.buttonRow {
+  margin-top: 10px;
+}
+
+.linkForm {
+  margin-top: 10px;
+}
+
+h5 {
+  text-align: right;
+  margin-bottom: 30px;
+}
+
+h5 .authors {
+  color: #bdc3c7;
 }
