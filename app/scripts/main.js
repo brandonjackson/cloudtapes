@@ -132,14 +132,25 @@ var DropZoneView = Backbone.View.extend({
         // files is a FileList of File objects. List some properties.
         var output = [];
         for (var i = 0, f; f = files[i]; i++) {
-            var track = new TrackModel({
-                title: f.name,
-                artist: f.size + "",
-                file: f,
-                id: _.uniqueId(),
-                trackNumber: this.collection.length + 1
-            });
-            this.collection.add(track);
+
+            ID3.readFile(f)
+                .then(_.bind(function(tags){
+                    console.log("ID3.readFile() success:");
+                    console.log(tags);
+                    var track = new TrackModel({
+                        title: tags.title,
+                        artist: tags.artist,
+                        size: this.f.size,
+                        file: this.f,
+                        id: _.uniqueId(),
+                        trackNumber: this.collection.length + 1
+                    });
+                    this.collection.add(track);
+                },{ collection: this.collection, f:f }))
+                .fail(function(err){
+                    console.log("ID3.readFile() failed:");
+                    console.log(err);
+                });
         }
     },
     onDragOver: function (e) {
