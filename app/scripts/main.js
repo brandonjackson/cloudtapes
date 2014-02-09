@@ -37,16 +37,21 @@ var ListItemView = Backbone.Epoxy.View.extend({
     tagName: "li",
     bindings: {
         "span.title": "text:title",
-        "span.artist": "text:artist"
+        "span.artist": "text:artist",
+        "span.trackNumber": "text:trackNumber"
     },
-    template: _.template("<span class='title' rel='<% id %>'><% title %></span>"),
-    render: function(data){
+    template: _.template(
+        "<span class='trackNumber'><% trackNumber %></span> " +
+        "<span class='title'><% title %></span> " +
+        "<span class='artist'><% artist %></span>"
+    ),
+    render: function(){
         this.$el.html( this.template(this.model.attributes));
         this.$el.attr("rel",this.model.id);
         return this;
     },
     initialize: function() {
-        this.$el.html( this.template(this.model.attributes));//this.model.get("title") );
+        this.render();
     }
 });
 
@@ -77,7 +82,6 @@ var TracksCollection = Backbone.Collection.extend({
         }
     },
     sortByIdList: function(ids){
-
         console.log('TracksCollection.sortByIdList()');
         for(var i=0; i < ids.length; i++){
             var model = this.get(ids[i]);
@@ -111,7 +115,9 @@ var DropZoneView = Backbone.View.extend({
             var track = new TrackModel({
                 title: f.name,
                 artist: f.size + "",
-                file: f
+                file: f,
+                id: _.uniqueId(),
+                trackNumber: this.collection.length + 1
             });
             this.collection.add(track);
         }
