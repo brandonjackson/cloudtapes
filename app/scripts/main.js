@@ -34,31 +34,9 @@ var Router = Backbone.Router.extend({
 
 var router = new Router();
 
-var ListItemView = Backbone.Epoxy.View.extend({
-    tagName: "li",
-    bindings: {
-        "span.title": "text:title",
-        "span.artist": "text:artist",
-        "span.trackNumber": "text:trackNumber"
-    },
-    template: _.template(
-        "<span class='trackNumber'><% trackNumber %></span> " +
-        "<span class='title'><% title %></span> " +
-        "<span class='artist'><% artist %></span>"
-    ),
-    render: function(){
-        this.$el.html( this.template(this.model.attributes));
-        this.$el.attr("rel",this.model.id);
-        return this;
-    },
-    initialize: function() {
-        this.render();
-    }
-});
-
 var TracksCollection = Backbone.Collection.extend({
     model: TrackModel,
-    view: ListItemView,
+    view: TrackView,
     initialize: function(options){
         this.on("change:trackNumber",function(){
             this.sort();
@@ -113,52 +91,6 @@ var TracksCollection = Backbone.Collection.extend({
                 console.log("ID3.readFile() failed:");
                 console.log(err);
             });
-    }
-});
-
-// Drag and drop target zone
-// usage: 
-//   var dropZoneView = new DropZoneView({
-//      collection: tracksCollection,
-//      emptyStateView: ".empty"
-//   });
-var DropZoneView = Backbone.View.extend({
-    events: {
-        "dragover": "onDragOver",
-        "drop": "onDrop"
-    },
-    initialize: function(options){
-
-        // save empty state view
-        if(options.emptyStateView){
-            this.emptyStateView = this.$el.children(options.emptyStateView);
-        }
-        this.collection = options.collection;
-        this.collection.on("add remove", _.bind(this.refresh,this));
-    },
-
-    // Hide emptyState view when there are items in the list
-    refresh: function(){
-        if(this.emptyStateView){}
-        var emptyStateView = this.$el.children(".empty");
-        (this.collection.length > 0) ? this.emptyStateView.hide() : this.emptyStateView.show();
-    },
-    onDrop: function(e){
-        e.originalEvent.stopPropagation();
-        e.originalEvent.preventDefault();
-
-        var files = e.originalEvent.dataTransfer.files; // FileList object.
-
-        // files is a FileList of File objects. List some properties.
-        var output = [];
-        for (var i = 0, f; f = files[i]; i++) {
-            this.collection.addFromFile(f);
-        }
-    },
-    onDragOver: function (e) {
-        e.originalEvent.stopPropagation();
-        e.originalEvent.preventDefault();
-        e.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
     }
 });
 
