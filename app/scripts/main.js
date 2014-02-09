@@ -42,6 +42,7 @@ var ListItemView = Backbone.Epoxy.View.extend({
     template: _.template("<span class='title' rel='<% id %>'><% title %></span>"),
     render: function(data){
         this.$el.html( this.template(this.model.attributes));
+        this.$el.attr("rel",this.model.id);
         return this;
     },
     initialize: function() {
@@ -77,6 +78,14 @@ var TracksCollection = Backbone.Collection.extend({
     },
     sortByIdList: function(ids){
 
+        console.log('TracksCollection.sortByIdList()');
+        for(var i=0; i < ids.length; i++){
+            var model = this.get(ids[i]);
+            model.set({
+                trackNumber: i+1
+            });
+        }
+    },
     }
 });
 
@@ -156,7 +165,8 @@ $(document).ready(function () {
 
     $("#bind-collection ul").sortable({
         update: function(e,ui){
-            var sortedIdList = $("#bind-collection ul").sortable( "toArray", { attribute: "rel" } );
+            console.log('sortable.update()');
+            var sortedIdList = $(this).sortable( "toArray", { attribute: "rel" } );
             tracksCollection.sortByIdList(sortedIdList);
         }
     });
