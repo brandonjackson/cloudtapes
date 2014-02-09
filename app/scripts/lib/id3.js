@@ -1201,13 +1201,13 @@ var ID3 = {
       track.cover = mix.cover;
       // TODO coverMime
       track.description = mix.description;
-      var mp3 = writeFile(files[i], tracks[i]);
+      var mp3 = writeFile(files[i], track);
       tagged.push(mp3);
     }
-    if (tagged.length !== 0) {
+    if (tagged.length !== length) {
       cb(null, tagged);
     } else {
-      cb('Generic playlist error.');
+      cb('Playlist error.');
     }
 
   }
