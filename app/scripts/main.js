@@ -16,7 +16,7 @@ $(document).ready(function () {
     'use strict';
     ss14Team45.init();
 
-    var client = new DropboxClient("f6u02e6s8nett1d", "http://localhost/cloudtapes/app/receiver.html");
+    var client = new DropboxClient("f6u02e6s8nett1d", "http://localhost:9000/receiver.html");
 
     client.authenticate()
         .then(function(client){
