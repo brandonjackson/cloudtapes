@@ -124,70 +124,29 @@ var MixInfoView = Backbone.Epoxy.View.extend({
 
 // Submit To Dropbox
 
-function upload(mix, dropboxClient){
-
-// 1) rewrite files
-//     - prep files, info arrays
-//     - handle cb(error,tracks,playlist)
-// 2) get trackCollections.folderName
-// 3) writeFiles to dropbox, checking progress
-    var files = mix.tracks.toFileList();
-    var info = mix.toJSON();
-    info.tracks = mix.tracks.toJSON();
-    console.log("info passed to id3.makeplaylist");
-    console.log(info);
-    ID3.makePlaylist(files, info, function(error, tracks){
-        console.log(error);
-        console.log(tracks);
-
-        mix.setFolderName();
-
-        if(error){
-            // error handling code here
-        }
-
-        // grab folderName
-        dropboxClient.mkdir(mix.get("folderName"))
-            .then(_.bind(function(stat){
-                console.log('mkdir success, creating files');
-
-                // create folder
-                for(var i=0; i < this.tracks.length; i++){
-                    var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
-                    console.log("Uploading File to "+path);
-                    this.dropboxClient.writeFile(path,this.tracks[i]);
-                }
-            }, {mix: mix, dropboxClient: dropboxClient, tracks: tracks}))
-            .fail(function(error){
-                // handle errors
-            });
-    });
-
-}
-
 $(document).ready(function () {
     'use strict';
     ss14Team45.init();
     var client = new DropboxClient("f6u02e6s8nett1d", "http://localhost:9000/receiver.html");
 
-    client.authenticate()
-        .then(function(client){
-          return client.mkdir("cirrus");
-        })
-        .then(function(stat){
-          return client.writeFile("cirrus/hello_world.txt", "Hello, world!\n");
-        })
-        .then(function(stat){
-          return client.makeUrl("cirrus",{ long: true });
-        })
-        .then(function(urlObject){
-          console.log(urlObject);
-          alert("URL: "+urlObject.url+"?dl=1");
-        })
-        .fail(function(error){
-          console.log(error);
-          alert("An Unexpected Error Has Occurred");
-        });
+    // client.authenticate()
+    //     .then(function(client){
+    //       return client.mkdir("cirrus");
+    //     })
+    //     .then(function(stat){
+    //       return client.writeFile("cirrus/hello_world.txt", "Hello, world!\n");
+    //     })
+    //     .then(function(stat){
+    //       return client.makeUrl("cirrus",{ long: true });
+    //     })
+    //     .then(function(urlObject){
+    //       console.log(urlObject);
+    //       alert("URL: "+urlObject.url+"?dl=1");
+    //     })
+    //     .fail(function(error){
+    //       console.log(error);
+    //       alert("An Unexpected Error Has Occurred");
+    //     });
 
     var mixInfoView = new MixInfoView({
         model: mixModel
@@ -205,4 +164,65 @@ $(document).ready(function () {
         console.log("Submit Button Clicked");
         upload(mixModel,client);
     });
+
+    function upload(mix, dropboxClient){
+
+    // 1) rewrite files
+    //     - prep files, info arrays
+    //     - handle cb(error,tracks,playlist)
+    // 2) get trackCollections.folderName
+    // 3) writeFiles to dropbox, checking progress
+        var files = mix.tracks.toFileList();
+        var info = mix.toJSON();
+        info.tracks = mix.tracks.toJSON();
+        console.log("info passed to id3.makeplaylist");
+        console.log(info);
+        dropboxClient.authenticate()
+            .then(_.bind(function(client){
+                 ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
+
+                    this.error = error;
+                    this.tracks = tracks;
+
+                    console.log(this.error);
+                    console.log(this.tracks);
+
+                    this.mix.setFolderName();
+
+                    if(this.error){
+                        // error handling code here
+                    }
+
+                    // grab folderName
+                    this.dropboxClient.mkdir(this.mix.get("folderName"))
+                        .then(_.bind(function(stat){
+                            console.log('mkdir success, creating files');
+
+                            var promises = [];
+
+                            // create folder
+                            for(var i=0; i < this.tracks.length; i++){
+                                var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
+                                console.log("Uploading File to "+path);
+                                promises.push(this.dropboxClient.writeFile(path,this.tracks[i]));
+                            }
+
+                            Q.allSettled(promises).then(_.bind(function(result){
+                                console.log("All Done! Making URL...");
+                                console.log(this);
+                                console.log(this.dropboxClient);
+                                this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true })
+                                    .then(_.bind(function(urlObject){
+                                        console.log("Download Link:");
+                                        console.log(urlObject.url);
+                                    },this));
+                            },this));
+                        }, this))
+                        .fail(function(error){
+                            // handle errors
+                        });
+                },this));
+            }, { files: files, info: info, mix: mix, dropboxClient: dropboxClient}));
+       
+    }
 });
