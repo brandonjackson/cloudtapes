@@ -1,5 +1,4 @@
 /*global ss14Team45, $*/
-var FOLDER_NAME = "test";
 
 
 window.ss14Team45 = {
