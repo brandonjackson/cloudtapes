@@ -1,3 +1,5 @@
+@import url("../bower_components/nprogress/nprogress.css");
+
 body {
     background: #fafafa;
 }
@@ -103,4 +105,16 @@ h5 .authors {
 
 #mix-info {
   margin-right: 0px;
+}
+
+#tracks .close {
+  font-size: 14px;
+  line-height: inherit;
+  text-shadow: none;
+  opacity: inherit;
+  filter: inherit;
+}
+
+#tracks .close:hover, #tracks .close:focus {
+  color: #e74c3c;
 }
