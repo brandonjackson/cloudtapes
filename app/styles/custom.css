@@ -39,6 +39,7 @@ body {
   width: 68%;
   float: left;
   background: #ecf0f1;
+  padding: 20px;
 }
 
 #image {
@@ -88,4 +89,8 @@ h5 {
 
 h5 .authors {
   color: #bdc3c7;
+}
+
+.actualImage {
+  max-width: 100%;
 }
