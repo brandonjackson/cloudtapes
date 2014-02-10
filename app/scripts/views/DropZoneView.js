@@ -83,7 +83,7 @@ var ImageDropZoneView = Backbone.View.extend({
 
         var imageFile = e.originalEvent.dataTransfer.files[0]; // FileList object.
         console.log(imageFile.type);
-        if (["image/png","image/gif","image/jpg","image/jpeg"].indexOf(imageFile.type) == -1) return false;
+        if (["image/png","image/gif","image/jpg","image/jpeg","image/bmp"].indexOf(imageFile.type) == -1) return false;
         this.model.setImageFromFile(imageFile);
     },
     onDragOver: function (e) {

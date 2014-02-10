@@ -48,6 +48,7 @@ body {
   float: left;
   margin-right: 20px;
   background: #bdc3c7;
+  overflow: hidden;
 }
 
 .dropstuff h2 {
@@ -56,6 +57,10 @@ body {
   margin: auto;
   width: 100px;
   margin-top: 80px;
+}
+
+#tracks h2 {
+  margin-top: 60px;
 }
 
 #tracks, #image {
@@ -85,6 +90,7 @@ body {
 h5 {
   text-align: right;
   margin-bottom: 30px;
+  margin-top: 100px;
 }
 
 h5 .authors {
@@ -93,4 +99,8 @@ h5 .authors {
 
 .actualImage {
   max-width: 100%;
+}
+
+#mix-info {
+  margin-right: 0px;
 }

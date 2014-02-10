@@ -9,7 +9,8 @@
     "modernizr": "~2.6.2",
     "backbone.epoxy": "~1.0",
     "q": "~0.9",
-    "jquery-ui": "~1.10.3"
+    "jquery-ui": "~1.10.3",
+    "nprogress": "~0.1.2"
   },
   "devDependencies": {}
 }

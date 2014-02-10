@@ -202,7 +202,12 @@ $(document).ready(function () {
         console.log(info);
         dropboxClient.authenticate()
             .then(_.bind(function(client){
-                 ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
+                NProgress.start({
+                    trickleRate: 0.01,
+                    trickleSpeed: 3000,
+                    showSpinner: false
+                });
+                ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
 
                     this.error = error;
                     this.tracks = tracks;
@@ -215,7 +220,6 @@ $(document).ready(function () {
                     if(this.error){
                         // error handling code here
                     }
-
                     // grab folderName
                     this.dropboxClient.mkdir(this.mix.get("folderName"))
                         .then(_.bind(function(stat){
@@ -227,7 +231,8 @@ $(document).ready(function () {
                             for(var i=0; i < this.tracks.length; i++){
                                 var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
                                 console.log("Uploading File to "+path);
-                                var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]);
+                                var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]).then(function(){
+                                }); 
                                 promises.push(writePromise);
                             }
 
@@ -236,6 +241,7 @@ $(document).ready(function () {
                             console.log("All Done! Making URL...");
                             return this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true });
                         },this)).then(_.bind(function(urlObject){
+                            NProgress.done();
                             console.log("Download Link:");
                             console.log(urlObject.url);
                             console.log($);
