@@ -202,11 +202,12 @@ $(document).ready(function () {
         console.log(info);
         dropboxClient.authenticate()
             .then(_.bind(function(client){
-                NProgress.start({
-                    trickleRate: 0.01,
-                    trickleSpeed: 3000,
+                NProgress.configure({
+                    trickleRate: 0.02,
+                    trickleSpeed: 1000,
                     showSpinner: false
                 });
+                NProgress.start();
                 ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
 
                     this.error = error;
