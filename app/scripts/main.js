@@ -116,7 +116,7 @@ $(document).ready(function () {
     'use strict';
     ss14Team45.init();
     var origin = window.location.origin;
-    var client = new DropboxClient("f6u02e6s8nett1d", origin +"/receiver.html");
+    var client = new DropboxClient("7va0t7mtct8s7uo", origin +"/receiver.html");
 
     // client.authenticate()
     //     .then(function(client){
