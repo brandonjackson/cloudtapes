@@ -13,6 +13,7 @@
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/custom.css">
+        <link rel="stylesheet" href="bower_components/nprogress/nprogress.css">
         <!-- endbuild -->
         
         <!-- build:js scripts/vendor/modernizr.js -->
@@ -61,13 +62,13 @@
               </div>
             </div>
             <div class="buttonRow row">
-              <button type="button" class="btn btn-success" id="submit"><span class="glyphicon glyphicon-cloud-upload"></span> Upload Mixtape</button>
+              <button type="button" class="btn btn-success" id="submit"><span class="glyphicon glyphicon-cloud-upload"></span> Save to Dropbox</button>
             </div>
 
             <div class="buttonRow row">
             <div id="download" style="display: None">
-                <a type="button" class="btn btn-primary" id="zip" href="#"><span class="glyphicon glyphicon-cloud-download"></span> Download Mixtape</a>
-                or visit link
+                <a type="button" class="btn btn-primary" id="zip" href="#"><span class="glyphicon glyphicon-cloud-download"></span> Download Zip</a>
+                or share link
                 <input type="text" class="form-control linkForm" value="" id="download-url" />
             </div>
 
@@ -110,6 +111,7 @@
         <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
         <script src="bower_components/jquery-ui/ui/jquery.ui.widget.js"></script>
         <script src="bower_components/jquery-ui/ui/jquery.ui.sortable.js"></script>
+        <script src="bower_components/nprogress/nprogress.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/main.js -->

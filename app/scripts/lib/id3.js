@@ -1157,7 +1157,8 @@ var ID3 = {
       album: '',
       cover: null,
       coverMime: '',
-      description: ''
+      description: '',
+      albumArtist: ''
     };
     for(var k in info) {
       i[k] = info[k];
@@ -1172,7 +1173,8 @@ var ID3 = {
       {frameType: 'TPE1', data: i.artist},
       {frameType: 'TYER', data: i.year},
       {frameType: 'TRCK', data: i.trck},
-      {frameType: 'TCMP', data: '1'}
+      {frameType: 'TCMP', data: '1'},
+      {frameType: 'TPE2', data: i.albumArtist}
     ];
     if (i.cover) opts.push({frameType: 'APIC', data: i.cover, coverMime: i.coverMime});
     var mp3 = ID3Writer.create(opts, blob);
@@ -1202,6 +1204,7 @@ var ID3 = {
       track.cover = mix.imageFile || null;
       track.coverMime = mix.imageFile===undefined ? null : mix.imageFile.type;
       track.description = mix.description;
+      track.albumArtist = mix.author;
       var mp3 = ID3.writeFile(files[i], track);
       tagged.push(mp3);
     }

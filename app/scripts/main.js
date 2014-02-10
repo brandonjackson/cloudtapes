@@ -147,25 +147,6 @@ $(document).ready(function () {
         });
     }
 
-    // client.authenticate()
-    //     .then(function(client){
-    //       return client.mkdir("cirrus");
-    //     })
-    //     .then(function(stat){
-    //       return client.writeFile("cirrus/hello_world.txt", "Hello, world!\n");
-    //     })
-    //     .then(function(stat){
-    //       return client.makeUrl("cirrus",{ long: true });
-    //     })
-    //     .then(function(urlObject){
-    //       console.log(urlObject);
-    //       alert("URL: "+urlObject.url+"?dl=1");
-    //     })
-    //     .fail(function(error){
-    //       console.log(error);
-    //       alert("An Unexpected Error Has Occurred");
-    //     });
-
     var mixInfoView = new MixInfoView({
         model: mixModel
     });
@@ -183,6 +164,9 @@ $(document).ready(function () {
         $(this).removeClass('btn-success');
         $(this).addClass('btn-disabled');
         $(this).text('Uploading...');
+        $("#bind-collection ul").sortable("disable");
+        $("#mix-title").attr("disabled", true);
+        $("#mix-author").attr("disabled", true);
         upload(mixModel,client);
     });
 
@@ -200,7 +184,13 @@ $(document).ready(function () {
         console.log(info);
         dropboxClient.authenticate()
             .then(_.bind(function(client){
-                 ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
+                NProgress.configure({
+                    trickleRate: 0.02,
+                    trickleSpeed: 1000,
+                    showSpinner: false
+                });
+                NProgress.start();
+                ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
 
                     this.error = error;
                     this.tracks = tracks;
@@ -213,7 +203,6 @@ $(document).ready(function () {
                     if(this.error){
                         // error handling code here
                     }
-
                     // grab folderName
                     this.dropboxClient.mkdir(this.mix.get("folderName"))
                         .then(_.bind(function(stat){
@@ -225,7 +214,8 @@ $(document).ready(function () {
                             for(var i=0; i < this.tracks.length; i++){
                                 var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
                                 console.log("Uploading File to "+path);
-                                var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]);
+                                var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]).then(function(){
+                                }); 
                                 promises.push(writePromise);
                             }
 
@@ -234,6 +224,7 @@ $(document).ready(function () {
                             console.log("All Done! Making URL...");
                             return this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true });
                         },this)).then(_.bind(function(urlObject){
+                            NProgress.done();
                             console.log("Download Link:");
                             console.log(urlObject.url);
                             console.log($);
