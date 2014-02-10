@@ -1,0 +1,7 @@
+{
+  "name": "cloudtapes",
+  "root": "./dist",
+  "clean_urls": true,
+  "cache_control": {},
+  "routes": {}
+}
