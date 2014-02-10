@@ -19,17 +19,25 @@ var MixModel= Backbone.Model.extend({
     parse: function(response, options)  {
         return response;
     },
-    setFolderName: function(){
-        var timestamp = new Date().getTime().toString();
-        if(this.get("author") || this.get("")){
-            var baseName = this.get("author") + "_" + this.get("title") + "_" + timestamp;
-        } else {
-            baseName = timestamp;
-        }
-        this.set({
-            folderName: folderName = baseName.replace(/[^a-z0-9]/gi, '_').toLowerCase()
-        });
 
+    // Generates Folder Name for use on Dropbox. These folder names
+    // are not guaranteed to be unique, and should be verified.
+    // 
+    // If Mix has details:
+    //   Author Name - Album Title (mm-dd-yyyy)
+    // Else:
+    //   CloudTapes Mixtape (mm-dd-yyyy)
+    setFolderName: function(){
+        var timestamp = new Date().toLocaleDateString().replace(/[\/]/g,"-");
+        if(this.get("author") || this.get("")){
+            var baseName = this.get("author") + " - " + this.get("title");
+        } else {
+            baseName = "CloudTapes Mixtape";
+        }
+        var folderName = baseName.replace(/[^a-z0-9\s\(\)\-\&]/gi, '') + " (" + timestamp + ")";
+        this.set({
+            folderName: folderName
+        });
     },
     setImageFromFile: function(imageFile, type) {
         console.log("Setting image");
