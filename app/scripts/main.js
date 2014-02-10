@@ -149,25 +149,6 @@ $(document).ready(function () {
         });
     }
 
-    // client.authenticate()
-    //     .then(function(client){
-    //       return client.mkdir("cirrus");
-    //     })
-    //     .then(function(stat){
-    //       return client.writeFile("cirrus/hello_world.txt", "Hello, world!\n");
-    //     })
-    //     .then(function(stat){
-    //       return client.makeUrl("cirrus",{ long: true });
-    //     })
-    //     .then(function(urlObject){
-    //       console.log(urlObject);
-    //       alert("URL: "+urlObject.url+"?dl=1");
-    //     })
-    //     .fail(function(error){
-    //       console.log(error);
-    //       alert("An Unexpected Error Has Occurred");
-    //     });
-
     var mixInfoView = new MixInfoView({
         model: mixModel
     });
@@ -185,6 +166,9 @@ $(document).ready(function () {
         $(this).removeClass('btn-success');
         $(this).addClass('btn-disabled');
         $(this).text('Uploading...');
+        $("#bind-collection ul").sortable("disable");
+        $("#mix-title").attr("disabled", true);
+        $("#mix-author").attr("disabled", true);
         upload(mixModel,client);
     });
 
