@@ -1,7 +1,7 @@
 var TrackView = Backbone.Epoxy.View.extend({
     tagName: "li",
     events: {
-        'click.removeTrack': 'removeTrack'
+        'click .removeTrack': 'removeTrack'
     },
     bindings: {
         "span.title": "text:title",
@@ -24,6 +24,7 @@ var TrackView = Backbone.Epoxy.View.extend({
     },
     removeTrack: function(e) {
         e.preventDefault();
+        console.log('removing');
         this.model.trigger('destroy', this.model, this.model.collection);
     }
 });

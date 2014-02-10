@@ -161,10 +161,11 @@ $(document).ready(function () {
     
     $("#submit").click(function(){
         console.log("Submit Button Clicked");
-        $(this).removeClass('btn-success');
-        $(this).addClass('btn-disabled');
+        if (mixModel.tracks.length == 0) return false;
+        $("#submit").attr("disabled", true);
         $(this).text('Uploading...');
         $("#bind-collection ul").sortable("disable");
+        $(".removeTrack").hide();
         $("#mix-title").attr("disabled", true);
         $("#mix-author").attr("disabled", true);
         upload(mixModel,client);
