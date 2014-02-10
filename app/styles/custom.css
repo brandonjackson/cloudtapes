@@ -1,4 +1,14 @@
 @import url("../bower_components/nprogress/nprogress.css");
+#nprogress .bar {
+  background: #5cb85c;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #5cb85c, 0 0 5px #5cb85c;
+}
+#nprogress .spinner-icon {
+  border-top-color:  #5cb85c;
+  border-left-color: #5cb85c;
+}
 
 body {
     background: #fafafa;
@@ -16,6 +26,7 @@ body {
 }
 #tracks ul li{
 	clear: both;
+  cursor:move;
 }
 #tracks ul li span{
 }

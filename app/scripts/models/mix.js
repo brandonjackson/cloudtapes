@@ -28,8 +28,8 @@ var MixModel= Backbone.Model.extend({
     // Else:
     //   CloudTapes Mixtape (mm-dd-yyyy)
     setFolderName: function(){
-        var timestamp = new Date().toLocaleDateString().replace(/[\/]/g,"-");
-        if(this.get("author") || this.get("")){
+        var timestamp = new Date().getTime();
+        if(this.get("author") || this.get("title")){
             var baseName = this.get("author") + " - " + this.get("title");
         } else {
             baseName = "CloudTapes Mixtape";
