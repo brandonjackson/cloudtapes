@@ -118,6 +118,37 @@ $(document).ready(function () {
     var origin = window.location.origin;
     var client = new DropboxClient("7va0t7mtct8s7uo", origin +"/receiver.html");
 
+    function echonestSearch(model){
+    // Usage:
+    //     var exampleModel = new TrackModel({ artist: "Bloc Party", title: "Banquet"});
+    //     echonestSearch(exampleModel);
+        var echonest_api = "GWACZPT91IQY4YD0H";
+        var url = "http://developer.echonest.com/api/v4/song/search?api_key=";
+        url += echonest_api;
+        url += "&format=json&results=1&";
+        url += "artist="+encodeURIComponent(model.get("artist")) + "&";
+        url += "title="+encodeURIComponent(model.get("title")) + "&";
+        url += "bucket=audio_summary";
+        ///url = encodeURIComponent(url);
+        console.log(url);
+        var songSearch = $.ajax({
+            url: url
+        });
+
+        songSearch.then(_.bind(function(data){
+            console.log("songSearch data:");
+            console.log(data);
+
+            var songData = data.response.songs[0].audio_summary;
+            console.log(songData);
+            this.model.set(songData);
+
+
+        }, {model:model}), function(error){
+            console.log("ERROR");
+        });
+    }
+
     // client.authenticate()
     //     .then(function(client){
     //       return client.mkdir("cirrus");
