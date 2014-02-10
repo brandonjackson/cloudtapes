@@ -1,4 +1,4 @@
-/*global ss14Team45, Backbone*/
+/*global CloudTapes, Backbone*/
 
 var MixModel= Backbone.Model.extend({
 

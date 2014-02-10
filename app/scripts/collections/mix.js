@@ -1,4 +1,4 @@
-/*global ss14Team45, Backbone*/
+/*global CloudTapes, Backbone*/
 
 var MixCollection = Backbone.Collection.extend({
 

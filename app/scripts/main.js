@@ -1,7 +1,6 @@
-/*global ss14Team45, $*/
+/*global CloudTapes, $*/
 
-
-window.ss14Team45 = {
+window.CloudTapes = {
     Models: {},
     Collections: {},
     Views: {},
@@ -113,7 +112,7 @@ imageDropZoneView.delegateEvents();
 
 $(document).ready(function () {
     'use strict';
-    ss14Team45.init();
+    CloudTapes.init();
     var origin = window.location.origin;
     var client = new DropboxClient("7va0t7mtct8s7uo", origin +"/receiver.html");
 
