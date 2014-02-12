@@ -45,6 +45,14 @@ var TracksCollection = Backbone.Collection.extend({
             });
         }
     },
+    renumberTracks: function () {
+        console.log('TracksCollection.renumber()');
+        this.each(_.bind(function(track) {
+            track.set({
+                trackNumber: this.indexOf(track) + 1
+            });
+        }, this));
+    },
     toFileList: function(){
         return this.pluck("file");
     },

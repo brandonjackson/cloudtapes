@@ -25,6 +25,8 @@ var TrackView = Backbone.Epoxy.View.extend({
     removeTrack: function(e) {
         e.preventDefault();
         console.log('removing');
+        var tracks = this.model.collection;
         this.model.trigger('destroy', this.model, this.model.collection);
+        tracks.renumberTracks();
     }
 });
