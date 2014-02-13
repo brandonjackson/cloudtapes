@@ -10,13 +10,9 @@ window.CloudTapes = {
     }
 };
 
-var ListView = Backbone.Epoxy.View.extend({
-    el: "#bind-collection"
-});
-
 var trackCollection = new TrackCollection();
 
-var view = new ListView({
+var view = new TracksView({
     collection: trackCollection
 });
 
@@ -33,11 +29,6 @@ var mixModel = new MixModel({
     title:"",
     author:"",
     tracks: trackCollection
-});
-
-var MixInfoView = Backbone.Epoxy.View.extend({
-    el: "#mix-info",
-    bindings: "data-bind"
 });
 
 var imageDropZoneView = new ImageDropZoneView({
@@ -88,6 +79,7 @@ $(document).ready(function () {
     }
 
     var mixInfoView = new MixInfoView({
+        el: "#mix-info",
         model: mixModel
     });
 
