@@ -183,69 +183,69 @@ require([
         //     - handle cb(error,tracks,playlist)
         // 2) get trackCollections.folderName
         // 3) writeFiles to dropbox, checking progress
-            var files = mix.tracks.toFileList();
-            var info = mix.toJSON();
-            info.tracks = mix.tracks.toJSON();
-            console.log("info passed to id3.makeplaylist");
-            console.log(info);
+
             dropboxClient.authenticate()
-                .then(_.bind(function(client){
+                .then(function(client){
+                    console.log("upload(): authenticated, creating folder...");
+                    mix.setFolderName();
+                    return dropboxClient.mkdir(mix.get("folderName"));
+                })
+                .then(function(stat){
+                    console.log("upload(): folder created, re-writing id3 tags...");
+
                     NProgress.configure({
                         trickleRate: 0.02,
                         trickleSpeed: 1000,
                         showSpinner: false
                     });
                     NProgress.start();
-                    ID3.makePlaylist(this.files, this.info, _.bind(function(error, tracks){
 
-                        this.error = error;
-                        this.tracks = tracks;
+                    // Prepare Data to Pass to ID3 Library
+                    var files = mix.tracks.toFileList();
+                    var info = _.extend(mix.toJSON(),{
+                        tracks: mix.tracks.toJSON()
+                    });
 
-                        console.log(this.error);
-                        console.log(this.tracks);
-
-                        this.mix.setFolderName();
-
-                        if(this.error){
-                            // error handling code here
+                    // Re-write MP3 Files
+                    var id3Deferred = Q.defer();
+                    ID3.makePlaylist(files, info, function(error,tracks){
+                        if(error){
+                            id3Deferred.reject(error);
+                        } else {
+                            id3Deferred.resolve(tracks);
                         }
-                        // grab folderName
-                        this.dropboxClient.mkdir(this.mix.get("folderName"))
-                            .then(_.bind(function(stat){
-                                console.log('mkdir success, creating files');
+                    });
+                    return id3Deferred.promise;
+                }).then(function(tracks){
+                    console.log('upload(): id3 tags rewritten, uploading files...');
 
-                                var promises = [];
+                    var promises = [];
 
-                                // create folder
-                                for(var i=0; i < this.tracks.length; i++){
-                                    var path = this.mix.get("folderName") + "/"+ this.mix.tracks.at(i).get("fileName");
-                                    console.log("Uploading File to "+path);
-                                    var writePromise = this.dropboxClient.writeFile(path,this.tracks[i]).then(function(){
-                                    }); 
-                                    promises.push(writePromise);
-                                }
+                    for(var i=0; i < tracks.length; i++){
+                        var path = mix.get("folderName") + "/"+ mix.tracks.at(i).get("fileName");
+                        console.log("Uploading File to "+path);
+                        var writePromise = dropboxClient.writeFile(path,tracks[i]).then(function(){
+                        });
+                        promises.push(writePromise);
+                    }
 
-                                return Q.allSettled(promises);
-                            },this)).then(_.bind(function(result){
-                                console.log("All Done! Making URL...");
-                                return this.dropboxClient.makeUrl(this.mix.get('folderName'),{ long: true });
-                            },this)).then(_.bind(function(urlObject){
-                                NProgress.done();
-                                console.log("Download Link:");
-                                console.log(urlObject.url);
-                                console.log($);
-                                console.log($("#submit"));
-                                $("#submit").hide();
-                                $("#download").show();
-                                $("#download #zip").attr("href",urlObject.url+"?dl=1");
-                                $("#download #download-url").attr("value",urlObject.url);
-                            },this)).fail(function(error){
-                                // handle errors
-                            });
-                    },this));
-                }, { files: files, info: info, mix: mix, dropboxClient: dropboxClient}))
-                .fail(function(error){
-                    console.log("ERROR! outerpmost promise was rejected");
+                    return Q.allSettled(promises);
+
+                }).then(function(result){
+                    console.log("upload(): upload complete, making URL...");
+
+                    return dropboxClient.makeUrl(mix.get('folderName'),{ long: true });
+                }).then(function(urlObject){
+                    console.log("upload(): Finished! Download Link:");
+                    console.log(urlObject.url);
+
+                    NProgress.done();
+                    $("#submit").hide();
+                    $("#download").show();
+                    $("#download #zip").attr("href",urlObject.url+"?dl=1");
+                    $("#download #download-url").attr("value",urlObject.url);
+                }).fail(function(error){
+                    console.log("upload(): ERROR! outerpmost promise was rejected");
                     console.log(error);
                 });
            
