@@ -1,30 +1,38 @@
-/*global CloudTapes, Backbone*/
+/*global define*/
 
-var TrackModel= Backbone.Model.extend({
+define([
+    'underscore',
+    'backbone'
+], function (_, Backbone) {
+    'use strict';
 
-    url: '',
+    var TrackModel = Backbone.Model.extend({
+	    url: '',
 
-    initialize: function() {
-        this.on("change add", this.setFileName);
-    },
+	    initialize: function() {
+	        this.on("change add", this.setFileName);
+	    },
 
-    defaults: {
-    },
+	    defaults: {
+	    },
 
-    validate: function(attrs, options) {
-    },
+	    validate: function(attrs, options) {
+	    },
 
-    parse: function(response, options)  {
-        return response;
-    },
+	    parse: function(response, options)  {
+	        return response;
+	    },
 
-    setFileName: function(){
-        console.log("setFileName()");
-        this.set({
-            fileName: this.get("trackNumber") + " - " + 
-                      this.get("artist") + " - " +
-                      this.get("title") +
-                      ".mp3"
-        });
-    }
+	    setFileName: function(){
+	        console.log("setFileName()");
+	        this.set({
+	            fileName: this.get("trackNumber") + " - " + 
+	                      this.get("artist") + " - " +
+	                      this.get("title") +
+	                      ".mp3"
+	        });
+	    }
+    });
+
+    return TrackModel;
 });

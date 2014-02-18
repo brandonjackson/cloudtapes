@@ -1,14 +1,16 @@
 {
-  "name": "CloudTapes",
+  "name": "cloudtapes",
   "version": "0.0.0",
   "dependencies": {
     "sass-bootstrap": "~3.0.0",
     "jquery": "~1.9.0",
     "underscore": "~1.4.3",
     "backbone": "~1.0.0",
+    "requirejs": "~2.1.5",
+    "requirejs-text": "~2.0.5",
     "modernizr": "~2.6.2",
-    "backbone.epoxy": "~1.0",
-    "q": "~0.9",
+    "backbone.epoxy": "~1.1.0",
+    "q": "~1.0.0",
     "jquery-ui": "~1.10.3",
     "nprogress": "~0.1.2"
   },

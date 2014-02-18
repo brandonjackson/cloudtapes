@@ -30,3 +30,15 @@ var EchonestClient = (function(){
   return EchonestClient;
 
 }());
+
+if(typeof module !== 'undefined' && module.exports) {
+    module.exports = EchonestClient;
+} else {
+  if(typeof define === 'function' && define.amd) {
+    define('EchonestClient', ['jquery'], function() {
+      return EchonestClient;
+    });
+  } else {
+    window.EchonestClient = EchonestClient;
+  }
+}

@@ -179,12 +179,30 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
-        /*uglify: {
-            dist: {}
-        },*/
+        requirejs: {
+            dist: {
+                // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+                options: {
+                    baseUrl: '<%= yeoman.app %>/scripts',
+                    optimize: 'none',
+                    paths: {
+                        'templates': '../../.tmp/scripts/templates',
+                        'jquery': '../../app/bower_components/jquery/jquery',
+                        'underscore': '../../app/bower_components/underscore/underscore',
+                        'backbone': '../../app/bower_components/backbone/backbone'
+                    },
+                    // TODO: Figure out how to make sourcemaps work with grunt-usemin
+                    // https://github.com/yeoman/grunt-usemin/issues/30
+                    //generateSourceMaps: true,
+                    // required to support SourceMaps
+                    // http://requirejs.org/docs/errors.html#sourcemapcomments
+                    preserveLicenseComments: false,
+                    useStrict: true,
+                    wrap: true
+                    //uglify2: {} // https://github.com/mishoo/UglifyJS2
+                }
+            }
+        },
         useminPrepare: {
             html: '<%= yeoman.app %>/index.html',
             options: {
@@ -196,6 +214,16 @@ module.exports = function (grunt) {
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
             options: {
                 dirs: ['<%= yeoman.dist %>']
+            }
+        },
+        imagemin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/images',
+                    src: '{,*/}*.{png,jpg,jpeg}',
+                    dest: '<%= yeoman.dist %>/images'
+                }]
             }
         },
         cssmin: {
@@ -246,7 +274,15 @@ module.exports = function (grunt) {
                 }]
             }
         },
+        bower: {
+            all: {
+                rjsConfig: '<%= yeoman.app %>/scripts/main.js'
+            }
+        },
         jst: {
+            options: {
+                amd: true
+            },
             compile: {
                 files: {
                     '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
@@ -336,6 +372,8 @@ module.exports = function (grunt) {
         'jst',
         'compass:dist',
         'useminPrepare',
+        'requirejs',
+        'imagemin',
         'htmlmin',
         'concat',
         'cssmin',

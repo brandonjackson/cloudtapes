@@ -2,7 +2,11 @@
 
 var DropboxClient = (function(){
 
+  var Q;
+
   var DropboxClient = function(key, receiverURL){
+
+    Q = require('q');
 
     this.client = new Dropbox.Client({
       key: key
@@ -75,3 +79,15 @@ var DropboxClient = (function(){
   return DropboxClient;
 
 }());
+
+if(typeof module !== 'undefined' && module.exports) {
+    module.exports = DropboxClient;
+} else {
+  if(typeof define === 'function' && define.amd) {
+    define('DropboxClient', ['q'], function() {
+      return DropboxClient;
+    });
+  } else {
+    window.DropboxClient = DropboxClient;
+  }
+}
