@@ -188,10 +188,15 @@ require([
                 .then(function(client){
                     console.log("upload(): authenticated, creating folder...");
                     mix.setFolderName();
-                    return dropboxClient.mkdir(mix.get("folderName"));
+                    return dropboxClient.mkdirUnique(mix.get("folderName"));
                 })
                 .then(function(stat){
                     console.log("upload(): folder created, re-writing id3 tags...");
+                    
+                    // Ensure mix writes to the latest folderName
+                    mix.set({
+                        folderName: stat.name
+                    });
 
                     NProgress.configure({
                         trickleRate: 0.02,
