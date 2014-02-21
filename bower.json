@@ -12,7 +12,8 @@
     "backbone.epoxy": "~1.1.0",
     "q": "~1.0.0",
     "jquery-ui": "~1.10.3",
-    "nprogress": "~0.1.2"
+    "nprogress": "~0.1.2",
+    "chartjs": "*"
   },
   "devDependencies": {}
 }

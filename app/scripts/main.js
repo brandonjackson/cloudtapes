@@ -57,7 +57,8 @@ require.config({
         'id3reader': 'lib/id3reader',
         'id3': 'lib/id3',
         'DropboxClient': 'lib/DropboxClient',
-        'EchonestClient': 'lib/EchonestClient'
+        'EchonestClient': 'lib/EchonestClient',
+        'chartjs':'../bower_components/chartjs/chart'
     }
 });
 
@@ -81,6 +82,7 @@ require([
     'views/mixinfo',
     'views/track',
     'views/tracks',
+    'chartjs'
 ], function (){
 
     var 

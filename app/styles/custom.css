@@ -27,6 +27,7 @@ body {
 #tracks ul li{
 	clear: both;
   cursor:move;
+  padding: 3px 0;
 }
 #tracks ul li span{
 }
@@ -34,7 +35,7 @@ body {
 	border: 2px solid black;
 	border-radius: 15px;
 	height: 30px;
-	padding: 0 4px;
+	padding: 0 5px;
 	margin: 0;
 	font-size: 15px;
 	font-weight: bold;
@@ -103,7 +104,7 @@ body {
 h5 {
   text-align: right;
   margin-bottom: 30px;
-  margin-top: 100px;
+  margin-top: 70px;
 }
 
 h5 .authors {
@@ -128,4 +129,10 @@ h5 .authors {
 
 #tracks .close:hover, #tracks .close:focus {
   color: #e74c3c;
+}
+
+h3.chart-title{
+  font-size: 14px;
+  font-weight: bold;
+  /*margin: 5px 0 0;*/
 }

@@ -1,12 +1,13 @@
 /*global define*/
 
 define([
+    'jquery',
     'underscore',
     'backbone',
     'id3',
     'models/track',
     'views/track'
-], function (_, Backbone, ID3, TrackModel, TrackView) {
+], function ($,_, Backbone, ID3, TrackModel, TrackView) {
     'use strict';
     ID3 = require('id3');
 
@@ -17,6 +18,34 @@ define([
             this.on("change:trackNumber",function(){
                 this.sort();
             });
+            this.on("change:tempo change:trackNumber", function(){
+             var tempoCtx = $("#tempo-chart").get(0).getContext("2d");
+             var energyCtx = $("#energy-chart").get(0).getContext("2d");
+
+             var tempoChart = new Chart(tempoCtx).Line({
+                labels: _.map(this.pluck("trackNumber"), function(){ return ""; }),
+                datasets: [{
+                    pointColor: "#000",
+                    fillColor: "rgba(230,230,230,0)",
+                    strokeColor: "#000",
+                    data: this.getNormalizedData("tempo")
+                }]
+            },{
+                scaleShowLabels: false
+            });
+
+            var energyChart = new Chart(energyCtx).Line({
+                labels: _.map(this.pluck("trackNumber"), function(){ return ""; }),
+                datasets: [{
+                    pointColor: "#000",
+                    fillColor: "rgba(80,80,80,0)",
+                    strokeColor: "#000",
+                    data: this.getNormalizedData("energy")
+                }]
+            },{
+                scaleShowLabels: false
+            });
+         });
         },
         comparator: function(track){
             return track.get("trackNumber");
@@ -75,6 +104,13 @@ define([
                     console.log("ID3.readFile() failed:");
                     console.log(err);
                 });
+        },
+        getNormalizedData: function(property){
+            var data = this.pluck(property);
+            var maxima = _.max(data);
+            return _.map(data, function(item){
+                return item / maxima;
+            });
         }
     });
 
